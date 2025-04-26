@@ -1,0 +1,44 @@
+<div id="<%= dom_id country %>">
+  <br>
+  <%= render MapComponent.new(country: country.Official_Name) %>
+  <br>
+  Official Name: <%= country.Official_Name %>
+  <br>
+  Active: <%= country.first_year_of_activity %> - <%= country.last_year_of_activity %>
+  <br>
+  ISO: <%= country.ISO %>
+  <br>
+  Total Games: <%= country.number_of_games %>
+  <br>
+  Total Wins: <%= country.number_of_wins %>
+  <br>
+  Total Loses: <%= country.number_of_loses %>
+  <br>
+  Total Ties: <%= country.number_of_ties %>
+  <br>
+  Players: <%= country.number_of_players %>
+  <br>
+  number_of_wins_shootouts_as_home: <%= country.number_of_wins_shootouts_as_home %>
+  <br>
+  number_of_losses_shootouts_as_home: <%= country.number_of_losses_shootouts_as_home %>
+  <br>
+  number_of_wins_shootouts_as_away: <%= country.number_of_wins_shootouts_as_away %>
+  <br>
+  number_of_losses_shootouts_as_away: <%= country.number_of_losses_shootouts_as_away %>
+
+  <%= render WinLossTieBarChartComponent.new(title: "All games Statistics", wins: country.number_of_wins, losses: country.number_of_loses, ties: country.number_of_ties) %>
+
+  <%= render WinLossTieLineChartComponent.new(title: "All games statistics by year", wins: country.number_of_wins, losses: country.number_of_loses, ties: country.number_of_ties, date_range: "") %>
+
+  <%= render WinLossTieBarChartComponent.new(title: "Home games Statistics", wins: country.number_of_wins_as_home, losses: country.number_of_loses_as_home, ties: country.number_of_ties_as_home) %>
+
+  <%= render WinLossTieBarChartComponent.new(title: "Away games Statistics", wins: country.number_of_wins_as_away, losses: country.number_of_loses_as_away, ties: country.number_of_ties_as_away) %>
+
+  <%= country.unique_years_of_activity %>
+  <br>
+  <%= country.wins_per_year_as_home %>
+  <br>
+  <%= country.losses_per_year_as_home %>
+  <br>
+  <%= country.ties_per_year_as_home %>
+</div>

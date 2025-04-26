@@ -1,0 +1,11 @@
+<% content_for :title, "New country" %>
+
+<h1>New country</h1>
+
+<%= render "form", country: @country %>
+
+<br>
+
+<div>
+  <%= link_to "Back to countries", countries_path %>
+</div>

@@ -1,0 +1,19 @@
+<div id="<%= dom_id game %>">
+  <br>
+  <table>
+    <tr>
+      <th>Country</th>
+      <th>Score</th>
+      <th>Date</th>
+    </tr>
+    <tr>
+      <td><%= game.home_team.Official_Name %></td>
+      <td><%= game.home_score %></td>
+      <td rowspan="2"><%= game.date %></td>
+    </tr>
+    <tr>
+      <td><%= game.away_team.Official_Name %></td>
+      <td><%= game.away_score %></td>
+    </tr>
+  </table>
+</div>

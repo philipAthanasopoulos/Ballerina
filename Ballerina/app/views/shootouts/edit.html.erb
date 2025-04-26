@@ -1,0 +1,12 @@
+<% content_for :title, "Editing shootout" %>
+
+<h1>Editing shootout</h1>
+
+<%= render "form", shootout: @shootout %>
+
+<br>
+
+<div>
+  <%= link_to "Show this shootout", @shootout %> |
+  <%= link_to "Back to shootouts", shootouts_path %>
+</div>

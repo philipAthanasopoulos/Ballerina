@@ -1,0 +1,62 @@
+<div>
+  <h2><%= @title %></h2>
+  <div id="<%= @id_name %>"></div>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          // Bar Chart
+          const totalBarData = [
+              {label: "Wins", value: <%= @wins %>},
+              {label: "Loses", value: <%= @losses %>},
+              {label: "Ties", value: <%= @ties %>},
+          ];
+
+          const totalBarWidth = 600;
+          const totalBarHeight = 200;
+          const totalBarMargin = {top: 20, right: 20, bottom: 30, left: 40};
+
+          const totalBarSvg = d3
+              .select("#<%= @id_name %>")
+              .append("svg")
+              .attr("width", totalBarWidth)
+              .attr("height", totalBarHeight);
+
+          const totalX = d3
+              .scaleBand()
+              .domain(totalBarData.map((d) => d.label))
+              .range([totalBarMargin.left, totalBarWidth - totalBarMargin.right])
+              .padding(0.1);
+
+          const totalY = d3
+              .scaleLinear()
+              .domain([0, d3.max(totalBarData, (d) => d.value)])
+              .nice()
+              .range([totalBarHeight - totalBarMargin.bottom, totalBarMargin.top]);
+
+          totalBarSvg
+              .append("g")
+              .selectAll("rect")
+              .data(totalBarData)
+              .join("rect")
+              .attr("x", (d) => totalX(d.label))
+              .attr("y", (d) => totalY(d.value))
+              .attr("height", (d) => totalY(0) - totalY(d.value))
+              .attr("width", totalX.bandwidth())
+              .attr("fill", (d) => {
+                  if (d.label === "Wins") return "blue";
+                  if (d.label === "Loses") return "red";
+                  if (d.label === "Ties") return "yellow";
+              });
+
+          totalBarSvg
+              .append("g")
+              .attr("transform", `translate(0,${totalBarHeight - totalBarMargin.bottom})`)
+              .call(d3.axisBottom(totalX));
+
+          totalBarSvg
+              .append("g")
+              .attr("transform", `translate(${totalBarMargin.left},0)`)
+              .call(d3.axisLeft(totalY));
+
+      });
+  </script>
+</div>

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Shootouts" %>
+
+<h1>Shootouts</h1>
+
+<div id="shootouts">
+  <% @shootouts.each do |shootout| %>
+    <%= render shootout %>
+    <p>
+      <%= link_to "Show this shootout", shootout %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New shootout", new_shootout_path %>
