@@ -1,0 +1,25 @@
+<div>
+  <h1>TOP-10</h1>
+  <div>
+    <h2>By scoring function(3w + 1t)</h2>
+    <ol>
+      <% @countries.sort_by(&:global_score).reverse.first(10).each do |country| %>
+        <li>
+          <%= link_to country.Display_Name, country_path(country) %>, <%= country.global_score %> points
+        </li>
+      <% end %>
+    </ol>
+  </div>
+
+  <div>
+    <h2>By wins</h2>
+    <ol>
+      <% @countries.sort_by(&:number_of_wins).reverse.first(10).each do |country| %>
+        <li>
+          <%= link_to country.Display_Name, country_path(country) %>, <%= country.number_of_wins %> wins
+        </li>
+      <% end %>
+    </ol>
+  </div>
+
+</div>

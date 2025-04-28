@@ -6,14 +6,6 @@
     <%= link_to ">", dashboard_with_year_path(year: @year + 1), class: "button", id: "increase-year" %>
   </h1>
   <br>
-  TOP-10
-  <ol>
-    <% Country.all.sort_by(&:global_score).reverse.first(10).each do |country| %>
-      <li>
-        <%= link_to country.Display_Name, country_path(country) %>, <%= country.global_score %> points
-      </li>
-    <% end %>
-  </ol>
   <br>
   <br>
   Total games: <%= @games.count %>
@@ -22,7 +14,7 @@
   <br>
   Games with shootouts: <%= @games.joins("INNER JOIN shootouts ON games.id = shootouts.game_id ").count %>
   <br>
-  <%= @games.each do |game| %>
-    <%= render game %>
-  <% end %>
+  <%#= @games.each do |game| %>
+    <%#= render game %>
+  <%# end %>
 </div>
