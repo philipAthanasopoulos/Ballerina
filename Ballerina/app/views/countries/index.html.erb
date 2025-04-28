@@ -6,7 +6,7 @@
 
 <div id="countries">
   <% @countries.each do |country| %>
-    <%= render country %>
+    <%= country.Official_Name %>
     <p>
       <%= link_to "Show this country", country %>
     </p>

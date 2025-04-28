@@ -6,7 +6,7 @@
 
 <div id="players">
   <% @players.each do |player| %>
-    <%= render player %>
+    <%= player.name %>
     <p>
       <%= link_to "Show this player", player %>
     </p>

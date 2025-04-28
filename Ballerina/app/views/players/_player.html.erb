@@ -1,11 +1,13 @@
 <div id="<%= dom_id player %>">
-  ID: <%= player.id %>
+  <%= image_tag 'player_avatar.jpeg', width: 150 %>
   <br>
   Name: <%= player.name %>
   <br>
-  Country: <%= player.country.Official_Name %>
+  Country: <%= player.country&.Official_Name ? link_to(player.country.Official_Name, country_path(player.country)) : "Unknown" %>
   <br>
   Total Goals: <%= player.goals.count %>
   <br>
-  Activity: <%= player.first_year_of_activity %>
+  Activity: <%= player.year_span_of_scoring %>
+  <br>
+  Most goals in a single game: <%= player.most_goal_in_single_game %>
 </div>
