@@ -1,25 +1,43 @@
 <div>
   <h1>TOP-10</h1>
   <div>
-    <h2>By scoring function(3w + 1t)</h2>
-    <ol>
-      <% @countries.sort_by(&:global_score).reverse.first(10).each do |country| %>
-        <li>
-          <%= link_to country.Display_Name, country_path(country) %>, <%= country.global_score %> points
-        </li>
-      <% end %>
-    </ol>
-  </div>
-
-  <div>
     <h2>By wins</h2>
     <ol>
-      <% @countries.sort_by(&:number_of_wins).reverse.first(10).each do |country| %>
+      <% @top_10_by_wins.each do |row| %>
         <li>
-          <%= link_to country.Display_Name, country_path(country) %>, <%= country.number_of_wins %> wins
+          <%= Country.find(row.team_id).Official_Name %>, wins: <%= row.wins %>
         </li>
       <% end %>
     </ol>
   </div>
-
+  <div>
+    <h2>By score function(3w+t)</h2>
+    <ol>
+      <% @top_10_by_score_function.each do |row| %>
+        <li>
+          <%= Country.find(row.team_id).Official_Name %>, score: <%= row.score %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+  <div>
+    <h2>By wins/years</h2>
+    <ol>
+      <% @top_10_by_wins_divided_by_years.each do |row| %>
+        <li>
+          <%= Country.find(row.team_id).Official_Name %>, wins/years: <%= row.score %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+  <div>
+    <h2>By score/years</h2>
+    <ol>
+      <% @top_10_by_score_divided_by_years.each do |row| %>
+        <li>
+          <%= Country.find(row.team_id).Official_Name %>, wins/years: <%= row.score %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
 </div>

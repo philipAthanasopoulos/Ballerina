@@ -5,9 +5,13 @@
   <br>
   Country: <%= player.country&.Official_Name ? link_to(player.country.Official_Name, country_path(player.country)) : "Unknown" %>
   <br>
-  Total Goals: <%= player.goals.count %>
-  <br>
   Activity: <%= player.year_span_of_scoring %>
   <br>
+  Total Goals: <%= player.goals.count %>
+  <br>
   Most goals in a single game: <%= player.most_goal_in_single_game %>
+  <br>
+  Goals/Years of activity ratio: <%= player.goals_to_years_of_activity_ratio %>
+  <br>
+  Own goals: <%= player.number_of_own_goals %>
 </div>

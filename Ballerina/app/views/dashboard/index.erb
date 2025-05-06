@@ -14,7 +14,4 @@
   <br>
   Games with shootouts: <%= @games.joins("INNER JOIN shootouts ON games.id = shootouts.game_id ").count %>
   <br>
-  <%#= @games.each do |game| %>
-    <%#= render game %>
-  <%# end %>
 </div>
