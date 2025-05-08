@@ -8,10 +8,31 @@
   <br>
   <br>
   <br>
-  Total games: <%= @games.count %>
+  Total games: <%= @games.size %>
   <br>
-  Total ties: <%= @games.where(neutral: true).count %>
+  Total ties: <%= @games.where(neutral: true).size %>
   <br>
-  Games with shootouts: <%= @games.joins("INNER JOIN shootouts ON games.id = shootouts.game_id ").count %>
+  Games with shootouts: <%= @games.joins("INNER JOIN shootouts ON games.id = shootouts.game_id ").size %>
   <br>
+  <% @games.each do |game| %>
+    <div id="<%= dom_id game %>">
+      <br>
+      <table>
+        <tr>
+          <th>Country</th>
+          <th>Score</th>
+          <th>Date</th>
+        </tr>
+        <tr>
+          <td><%= game.home_team_name %></td>
+          <td><%= game.home_score %></td>
+          <td rowspan="2"><%= game.date %></td>
+        </tr>
+        <tr>
+          <td><%= game.away_team_name %></td>
+          <td><%= game.away_score %></td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
 </div>

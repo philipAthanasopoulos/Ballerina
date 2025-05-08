@@ -5,11 +5,13 @@
       <th>Country</th>
       <th>Score</th>
       <th>Date</th>
+      <th>Host Country</th>
     </tr>
     <tr>
       <td><%= game.home_team.Display_Name %></td>
       <td><%= game.home_score %></td>
       <td rowspan="2"><%= game.date %></td>
+      <td rowspan="2"><%= game.country ? game.country.Display_Name : "" %></td>
     </tr>
     <tr>
       <td><%= game.away_team.Display_Name %></td>
