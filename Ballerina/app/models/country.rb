@@ -133,4 +133,32 @@ class Country < ActiveRecord::Base
 
   end
 
+  def yearly_statistics
+    games = (home_games + away_games).sort_by(&:date)
+    years = (games.map { |game| game.date.year }.uniq.min..games.map { |game| game.date.year }.uniq.max).to_a
+
+    wins = years.map do |year|
+      games.select { |game| game.date.year == year && ((game.home_team_id == id && game.home_score > game.away_score) || (game.away_team_id == id && game.away_score > game.home_score)) }.count
+    end
+
+    losses = years.map do |year|
+      games.select { |game| game.date.year == year && ((game.home_team_id == id && game.home_score < game.away_score) || (game.away_team_id == id && game.away_score < game.home_score)) }.count
+    end
+
+    ties = years.map do |year|
+      games.select { |game| game.date.year == year && game.home_score == game.away_score }.count
+    end
+
+    first_year = years.first
+    last_year = years.last
+
+    {
+      wins: wins,
+      losses: losses,
+      ties: ties,
+      first_year: first_year,
+      last_year: last_year
+    }
+  end
+
 end

@@ -10,7 +10,7 @@
       <% end %>
     </ol>
     <div id="scatterplot-by-wins"></div>
-
+    <div id="scatterplot-by-wins-population"></div>
   </div>
   <div>
     <h2>By score function(3w+t)</h2>
@@ -22,7 +22,7 @@
       <% end %>
     </ol>
     <div id="scatterplot-by-score-function"></div>
-
+    <div id="scatterplot-by-score-function-population"></div>
   </div>
   <div>
     <h2>By wins/years</h2>
@@ -34,6 +34,7 @@
       <% end %>
     </ol>
     <div id="scatterplot-by-wins-years"></div>
+    <div id="scatterplot-by-wins-years-population"></div>
   </div>
   <div>
     <h2>By score/years</h2>
@@ -45,21 +46,21 @@
       <% end %>
     </ol>
     <div id="scatterplot-by-score-years"></div>
-
+    <div id="scatterplot-by-score-years-population"></div>
   </div>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
       // Example data structure for each leaderboard
       const leaderboards = {
-          byWins: <%= @top_10_by_wins.map { |row| { team_id: row.team_id, value: row.wins, area: Country.find(row.team_id).Area_SqKm } }.to_json.html_safe %>,
-          byScoreFunction: <%= @top_10_by_score_function.map { |row| { team_id: row.team_id, value: row.score, area: Country.find(row.team_id).Area_SqKm } }.to_json.html_safe %>,
-          byWinsYears: <%= @top_10_by_wins_divided_by_years.map { |row| { team_id: row.team_id, value: row.score, area: Country.find(row.team_id).Area_SqKm } }.to_json.html_safe %>,
-          byScoreYears: <%= @top_10_by_score_divided_by_years.map { |row| { team_id: row.team_id, value: row.score, area: Country.find(row.team_id).Area_SqKm } }.to_json.html_safe %>,
+          byWins: <%= @top_10_by_wins.map { |row| { team_id: row.team_id, value: row.wins, area: Country.find(row.team_id).Area_SqKm, population: Country.find(row.team_id).Population } }.to_json.html_safe %>,
+          byScoreFunction: <%= @top_10_by_score_function.map { |row| { team_id: row.team_id, value: row.score, area: Country.find(row.team_id).Area_SqKm, population: Country.find(row.team_id).Population } }.to_json.html_safe %>,
+          byWinsYears: <%= @top_10_by_wins_divided_by_years.map { |row| { team_id: row.team_id, value: row.score, area: Country.find(row.team_id).Area_SqKm, population: Country.find(row.team_id).Population } }.to_json.html_safe %>,
+          byScoreYears: <%= @top_10_by_score_divided_by_years.map { |row| { team_id: row.team_id, value: row.score, area: Country.find(row.team_id).Area_SqKm, population: Country.find(row.team_id).Population } }.to_json.html_safe %>,
       };
 
       // Function to create a scatterplot
-      function createScatterplot(data, containerId, xLabel, yLabel) {
+      function createScatterplot(data, containerId, xLabel, yLabel, xKey) {
           const width = 500;
           const height = 300;
           const margin = {top: 20, right: 30, bottom: 50, left: 50};
@@ -75,7 +76,7 @@
           // Scales
           const x = d3
               .scaleLinear()
-              .domain([0, d3.max(data, (d) => d.area)])
+              .domain([0, d3.max(data, (d) => d[xKey])])
               .range([0, width]);
 
           const y = d3
@@ -92,22 +93,22 @@
           svg.append("g").call(d3.axisLeft(y));
 
           // Labels
-         svg
-             .append("text")
-             .attr("x", width / 2)
-             .attr("y", height + margin.bottom - 10)
-             .attr("text-anchor", "middle")
-             .style("fill", "white")
-             .text(xLabel);
+          svg
+              .append("text")
+              .attr("x", width / 2)
+              .attr("y", height + margin.bottom - 10)
+              .attr("text-anchor", "middle")
+              .style("fill", "white")
+              .text(xLabel);
 
-         svg
-             .append("text")
-             .attr("transform", "rotate(-90)")
-             .attr("x", -height / 2)
-             .attr("y", -margin.left + 10)
-             .attr("text-anchor", "middle")
-             .style("fill", "white")
-             .text(yLabel);
+          svg
+              .append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("x", -height / 2)
+              .attr("y", -margin.left + 10)
+              .attr("text-anchor", "middle")
+              .style("fill", "white")
+              .text(yLabel);
 
           // Points
           svg
@@ -115,7 +116,7 @@
               .data(data)
               .enter()
               .append("circle")
-              .attr("cx", (d) => x(d.area))
+              .attr("cx", (d) => x(d[xKey]))
               .attr("cy", (d) => y(d.value))
               .attr("r", 5)
               .style("fill", "steelblue");
@@ -126,25 +127,57 @@
           leaderboards.byWins,
           "scatterplot-by-wins",
           "Area (SqKm)",
-          "Wins"
+          "Wins",
+          "area"
+      );
+      createScatterplot(
+          leaderboards.byWins,
+          "scatterplot-by-wins-population",
+          "Population",
+          "Wins",
+          "population"
       );
       createScatterplot(
           leaderboards.byScoreFunction,
           "scatterplot-by-score-function",
           "Area (SqKm)",
-          "Score"
+          "Score",
+          "area"
+      );
+      createScatterplot(
+          leaderboards.byScoreFunction,
+          "scatterplot-by-score-function-population",
+          "Population",
+          "Score",
+          "population"
       );
       createScatterplot(
           leaderboards.byWinsYears,
           "scatterplot-by-wins-years",
           "Area (SqKm)",
-          "Wins/Years"
+          "Wins/Years",
+          "area"
+      );
+      createScatterplot(
+          leaderboards.byWinsYears,
+          "scatterplot-by-wins-years-population",
+          "Population",
+          "Wins/Years",
+          "population"
       );
       createScatterplot(
           leaderboards.byScoreYears,
           "scatterplot-by-score-years",
           "Area (SqKm)",
-          "Score/Years"
+          "Score/Years",
+          "area"
+      );
+      createScatterplot(
+          leaderboards.byScoreYears,
+          "scatterplot-by-score-years-population",
+          "Population",
+          "Score/Years",
+          "population"
       );
   </script>
 </div>

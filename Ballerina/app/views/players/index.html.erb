@@ -6,11 +6,9 @@
 
 <div id="players">
   <% @players.each do |player| %>
-    <%= player.name %>
     <p>
-      <%= link_to "Show this player", player %>
+      <%= link_to player.name, player %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New player", new_player_path %>

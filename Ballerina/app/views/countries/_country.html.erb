@@ -30,17 +30,16 @@
 
   <%= render WinLossTieBarChartComponent.new(title: "All games Statistics", wins: country.number_of_wins, losses: country.number_of_loses, ties: country.number_of_ties) %>
 
-  <%= render WinLossTieLineChartComponent.new(title: "All games statistics by year", wins: country.number_of_wins, losses: country.number_of_loses, ties: country.number_of_ties, date_range: "") %>
-
+  <%= render WinLossTieLineChartComponent.new(
+    title: "All games statistics by year",
+    wins: country.yearly_statistics[:wins],
+    losses: country.yearly_statistics[:losses],
+    ties: country.yearly_statistics[:ties],
+    first_year: country.yearly_statistics[:first_year],
+    last_year: country.yearly_statistics[:last_year]
+  ) %>
   <%= render WinLossTieBarChartComponent.new(title: "Home games Statistics", wins: country.number_of_wins_as_home, losses: country.number_of_loses_as_home, ties: country.number_of_ties_as_home) %>
 
   <%= render WinLossTieBarChartComponent.new(title: "Away games Statistics", wins: country.number_of_wins_as_away, losses: country.number_of_loses_as_away, ties: country.number_of_ties_as_away) %>
 
-  <%#= country.unique_years_of_activity %>
-<!--  <br>-->
-  <%#= country.wins_per_year_as_home %>
-<!--  <br>-->
-  <%#= country.losses_per_year_as_home %>
-<!--  <br>-->
-  <%#= country.ties_per_year_as_home %>
 </div>
