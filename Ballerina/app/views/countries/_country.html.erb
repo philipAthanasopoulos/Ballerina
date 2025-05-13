@@ -42,4 +42,36 @@
 
   <%= render WinLossTieBarChartComponent.new(title: "Away games Statistics", wins: country.number_of_wins_as_away, losses: country.number_of_loses_as_away, ties: country.number_of_ties_as_away) %>
 
+  <h1>Games for <%= @country.Official_Name %> (Filtered by Year Range)</h1>
+
+  <%= form_with url: country_path(@country), method: :get, local: true do %>
+    <label for="start_year">Start Year:</label>
+    <input type="number" id="start_year" name="start_year" value="<%= params[:start_year] %>">
+    <br>
+    <label for="end_year">End Year:</label>
+    <input type="number" id="end_year" name="end_year" value="<%= params[:end_year] %>">
+    <button type="submit">Filter</button>
+  <% end %>
+  <% @games.each do |game| %>
+    <div id="<%= dom_id game %>">
+      <br>
+      <table>
+        <tr>
+          <th>Country</th>
+          <th>Score</th>
+          <th>Date</th>
+        </tr>
+        <tr>
+          <td><%= game.home_team.Official_Name %></td>
+          <td><%= game.home_score %></td>
+          <td rowspan="2"><%= game.date %></td>
+        </tr>
+        <tr>
+          <td><%= game.away_team.Official_Name %></td>
+          <td><%= game.away_score %></td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
+
 </div>

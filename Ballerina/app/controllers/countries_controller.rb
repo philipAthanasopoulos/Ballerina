@@ -8,6 +8,14 @@ class CountriesController < ApplicationController
 
   # GET /countries/1 or /countries/1.json
   def show
+    start_year = params[:start_year].to_i
+    end_year = params[:end_year].to_i
+
+    @games = Game.joins('INNER JOIN countries AS home_countries ON games.home_team_id = home_countries.id')
+                 .joins('INNER JOIN countries AS away_countries ON games.away_team_id = away_countries.id')
+                 .where('games.home_team_id = :country_id OR games.away_team_id = :country_id', country_id: @country.id)
+                 .where('EXTRACT(YEAR FROM games.date) BETWEEN :start_year AND :end_year', start_year: start_year, end_year: end_year)
+    puts @games
   end
 
   # GET /countries/new
@@ -58,13 +66,14 @@ class CountriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_country
-      @country = Country.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def country_params
-      params.fetch(:country, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_country
+    @country = Country.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def country_params
+    params.fetch(:country, {})
+  end
 end
