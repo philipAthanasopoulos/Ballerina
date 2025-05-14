@@ -15,4 +15,79 @@
   <br>
   Own goals: <%= player.number_of_own_goals %>
   <br>
+  <div id="goals-per-year-chart">
+    <h2>Goals to games ratio per year chart</h2>
+  </div>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const data = <%= player.goals_to_games_per_year_stats.map { |goal| { year: goal.year.to_i, ratio: goal.ratio.to_f } }.to_json.html_safe %>;
+
+          const margin = {top: 20, right: 30, bottom: 40, left: 50};
+          const width = 500 - margin.left - margin.right;
+          const height = 300 - margin.top - margin.bottom;
+
+          const svg = d3.select("#goals-per-year-chart")
+              .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+              .attr("transform", `translate(${margin.left},${margin.top})`);
+
+          const x = d3.scaleLinear()
+              .domain(d3.extent(data, d => d.year))
+              .range([0, width]);
+
+          const y = d3.scaleLinear()
+              .domain([0, d3.max(data, d => d.ratio)])
+              .range([height, 0]);
+
+          svg.append("g")
+              .attr("transform", `translate(0,${height})`)
+              .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+          svg.append("g")
+              .call(d3.axisLeft(y));
+
+          svg.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "steelblue")
+              .attr("stroke-width", 1.5)
+              .attr("d", d3.line()
+                  .x(d => x(d.year))
+                  .y(d => y(d.ratio))
+              );
+
+          svg.selectAll("circle")
+              .data(data)
+              .enter()
+              .append("circle")
+              .attr("cx", d => x(d.year))
+              .attr("cy", d => y(d.ratio))
+              .attr("r", 3)
+              .attr("fill", "steelblue");
+
+          svg.append("g")
+              .attr("transform", `translate(0,${height})`)
+              .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+              .append("text")
+              .attr("x", width / 2)
+              .attr("y", margin.bottom - 10)
+              .attr("fill", "black")
+              .attr("text-anchor", "middle")
+              .style("fill", "white")
+              .text("Year");
+
+          svg.append("g")
+              .call(d3.axisLeft(y))
+              .append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("x", -height / 2)
+              .attr("y", -margin.left + 15)
+              .attr("fill", "black")
+              .attr("text-anchor", "middle")
+              .style("fill", "white")
+              .text("Goals to Games Ratio");
+      });
+  </script>
 </div>

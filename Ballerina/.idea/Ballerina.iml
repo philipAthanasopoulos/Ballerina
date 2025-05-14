@@ -536,24 +536,6 @@
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Report code statistics (KLOCs, etc) from the application or engine" fullCommand="stats" id="stats" />
-          <RakeTaskImpl id="stimulus">
-            <subtasks>
-              <RakeTaskImpl description="Install Stimulus into the app" fullCommand="stimulus:install" id="install" />
-              <RakeTaskImpl id="install">
-                <subtasks>
-                  <RakeTaskImpl description="Install Stimulus on an app running bun" fullCommand="stimulus:install:bun" id="bun" />
-                  <RakeTaskImpl description="Install Stimulus on an app running importmap-rails" fullCommand="stimulus:install:importmap" id="importmap" />
-                  <RakeTaskImpl description="Install Stimulus on an app running node" fullCommand="stimulus:install:node" id="node" />
-                </subtasks>
-              </RakeTaskImpl>
-              <RakeTaskImpl id="manifest">
-                <subtasks>
-                  <RakeTaskImpl description="Show the current Stimulus manifest (all installed controllers)" fullCommand="stimulus:manifest:display" id="display" />
-                  <RakeTaskImpl description="Update the Stimulus manifest (will overwrite controllers/index.js)" fullCommand="stimulus:manifest:update" id="update" />
-                </subtasks>
-              </RakeTaskImpl>
-            </subtasks>
-          </RakeTaskImpl>
           <RakeTaskImpl description="Run all tests in test folder except system ones" fullCommand="test" id="test" />
           <RakeTaskImpl id="test">
             <subtasks>
@@ -615,18 +597,6 @@
               <RakeTaskImpl id="storage">
                 <subtasks>
                   <RakeTaskImpl description="" fullCommand="tmp:storage:clear" id="clear" />
-                </subtasks>
-              </RakeTaskImpl>
-            </subtasks>
-          </RakeTaskImpl>
-          <RakeTaskImpl id="turbo">
-            <subtasks>
-              <RakeTaskImpl description="Install Turbo into the app" fullCommand="turbo:install" id="install" />
-              <RakeTaskImpl id="install">
-                <subtasks>
-                  <RakeTaskImpl description="Install Turbo into the app with bun" fullCommand="turbo:install:bun" id="bun" />
-                  <RakeTaskImpl description="Install Turbo into the app with asset pipeline" fullCommand="turbo:install:importmap" id="importmap" />
-                  <RakeTaskImpl description="Install Turbo into the app with webpacker" fullCommand="turbo:install:node" id="node" />
                 </subtasks>
               </RakeTaskImpl>
             </subtasks>

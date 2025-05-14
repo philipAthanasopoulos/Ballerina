@@ -9,12 +9,18 @@ class Player < ActiveRecord::Base
   end
 
   def most_goal_in_single_game
-    goals.group(:game_id).count.values.max
+    goals.where.not(game_id: nil).group(:game_id).count.values.max
   end
 
   def goals_to_years_of_activity_ratio
     years = year_span_of_scoring
     goals.count.to_f / (years[1] - years[0] + 1)
+  end
+
+  def goals_to_games_per_year_stats
+    goals.joins('INNER JOIN games ON games.id = goals.game_id')
+         .group('EXTRACT(YEAR FROM games.date)')
+         .select('EXTRACT(YEAR FROM games.date) AS year, COUNT(goals.id) * 1.0 / COUNT(DISTINCT games.id) AS ratio')
   end
 
   def number_of_own_goals
