@@ -11,10 +11,6 @@ class Country < ActiveRecord::Base
     number_of_wins*3 + number_of_ties
   end
 
-  def global_score_year(year:)
-
-  end
-
   def number_of_games
     number_of_games_as_home + number_of_games_as_away
   end
@@ -127,10 +123,6 @@ class Country < ActiveRecord::Base
 
   def unique_years_of_activity
     (home_games.pluck(:date) + away_games.pluck(:date)).map(&:year).uniq.sort
-  end
-
-  def statistics_for_year(year:)
-
   end
 
   def yearly_statistics

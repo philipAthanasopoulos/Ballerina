@@ -15,7 +15,6 @@ class CountriesController < ApplicationController
                  .joins('INNER JOIN countries AS away_countries ON games.away_team_id = away_countries.id')
                  .where('games.home_team_id = :country_id OR games.away_team_id = :country_id', country_id: @country.id)
                  .where('EXTRACT(YEAR FROM games.date) BETWEEN :start_year AND :end_year', start_year: start_year, end_year: end_year)
-    puts @games
   end
 
   # GET /countries/new
