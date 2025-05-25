@@ -22,6 +22,16 @@
       document.addEventListener("DOMContentLoaded", function () {
           const data = <%= player.goals_to_games_per_year_stats.map { |goal| { year: goal.year.to_i, ratio: goal.ratio.to_f } }.to_json.html_safe %>;
 
+          // fill missing years with zero ratios
+          const startYear = Math.min(...data.map(d => d.year));
+          const endYear = Math.max(...data.map(d => d.year));
+          for (let year = startYear; year <= endYear; year++) {
+              if (!data.some(d => d.year === year)) {
+                  data.push({ year: year, ratio: 0 });
+              }
+          }
+          data.sort((a, b) => a.year - b.year);
+
           const margin = {top: 20, right: 30, bottom: 40, left: 50};
           const width = 500 - margin.left - margin.right;
           const height = 300 - margin.top - margin.bottom;

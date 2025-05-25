@@ -19,14 +19,6 @@
   Total Ties: <%= country.number_of_ties %>
   <br>
   Players: <%= country.number_of_players %>
-  <br>
-  number_of_wins_shootouts_as_home: <%= country.number_of_wins_shootouts_as_home %>
-  <br>
-  number_of_losses_shootouts_as_home: <%= country.number_of_losses_shootouts_as_home %>
-  <br>
-  number_of_wins_shootouts_as_away: <%= country.number_of_wins_shootouts_as_away %>
-  <br>
-  number_of_losses_shootouts_as_away: <%= country.number_of_losses_shootouts_as_away %>
 
   <%= render WinLossTieBarChartComponent.new(title: "All games Statistics", wins: country.number_of_wins, losses: country.number_of_loses, ties: country.number_of_ties) %>
 

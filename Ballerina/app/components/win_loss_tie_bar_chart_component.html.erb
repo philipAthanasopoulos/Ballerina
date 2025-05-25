@@ -10,7 +10,7 @@
               {label: "Ties", value: <%= @ties %>},
           ];
 
-          const totalBarWidth = 600;
+          const totalBarWidth = 1000;
           const totalBarHeight = 200;
           const totalBarMargin = {top: 20, right: 20, bottom: 30, left: 40};
 
@@ -56,6 +56,17 @@
               .append("g")
               .attr("transform", `translate(${totalBarMargin.left},0)`)
               .call(d3.axisLeft(totalY));
+
+          totalBarSvg
+              .selectAll("text.value")
+              .data(totalBarData)
+              .join("text")
+              .attr("class", "value")
+              .attr("x", (d) => totalX(d.label) + totalX.bandwidth() / 2)
+              .attr("y", (d) => totalY(d.value) - 5)
+              .attr("text-anchor", "middle")
+              .style("fill","white")
+              .text((d) => d.value);
 
       });
   </script>

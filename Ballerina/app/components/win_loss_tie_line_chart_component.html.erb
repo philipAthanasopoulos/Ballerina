@@ -9,7 +9,7 @@
   <script>
       document.addEventListener("DOMContentLoaded", function () {
           const margin = {top: 10, right: 30, bottom: 30, left: 60},
-              width = 460 - margin.left - margin.right,
+              width = 1000 - margin.left - margin.right,
               height = 400 - margin.top - margin.bottom;
 
           const svg = d3.select("#<%= @id_name %>")
@@ -20,19 +20,19 @@
               .attr("transform", `translate(${margin.left},${margin.top})`);
 
           const data = <%= {
-                          first_year: @first_year,
-                          last_year: @last_year,
-                          years: @date_range,
-                          wins: @wins,
-                          losses: @losses,
-                          ties: @ties
-                        }.to_json.html_safe %>;
+                            first_year: @first_year,
+                            last_year: @last_year,
+                            years: @date_range,
+                            wins: @wins,
+                            losses: @losses,
+                            ties: @ties
+                          }.to_json.html_safe %>;
 
           const formattedData = data.years.map((year, index) => ({
               year: year,
-              wins: data.wins[index],
-              losses: data.losses[index],
-              ties: data.ties[index]
+              wins: data.wins[year] || 0,
+              losses: data.losses[year] || 0,
+              ties: data.ties[year] || 0
           }));
 
           const x = d3.scaleLinear()
@@ -48,6 +48,14 @@
           svg.append("g")
               .call(d3.axisLeft(y));
 
+          svg.append("g")
+              .attr("class", "grid")
+              .call(d3.axisLeft(y).tickSize(-width).tickFormat(""));
+          svg.append("g")
+              .attr("class", "grid")
+              .attr("transform", `translate(0, ${height})`)
+              .call(d3.axisBottom(x).tickSize(-height).tickFormat(""));
+
           const color = d3.scaleOrdinal()
               .domain(["wins", "losses", "ties"])
               .range(["#4daf4a", "#e41a1c", "#377eb8"]);
@@ -58,7 +66,7 @@
                   .datum(formattedData)
                   .attr("fill", "none")
                   .attr("stroke", color(key))
-                  .attr("stroke-width", 1.5)
+                  .attr("stroke-width", 2)
                   .attr("d", d3.line()
                       .x(d => x(d.year))
                       .y(d => y(d[key]))

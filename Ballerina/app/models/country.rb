@@ -126,20 +126,19 @@ class Country < ActiveRecord::Base
   end
 
   def yearly_statistics
-    games = (home_games + away_games).sort_by(&:date)
-    years = (games.map { |game| game.date.year }.uniq.min..games.map { |game| game.date.year }.uniq.max).to_a
+    years = (home_games.pluck(:date).map(&:year) + away_games.pluck(:date).map(&:year)).uniq.sort
 
-    wins = years.map do |year|
-      games.select { |game| game.date.year == year && ((game.home_team_id == id && game.home_score > game.away_score) || (game.away_team_id == id && game.away_score > game.home_score)) }.count
-    end
+    wins = Game.where("(home_team_id = :id AND home_score > away_score) OR (away_team_id = :id AND away_score > home_score)", id: id)
+               .group("CAST(EXTRACT(YEAR FROM date) AS int)")
+               .count
 
-    losses = years.map do |year|
-      games.select { |game| game.date.year == year && ((game.home_team_id == id && game.home_score < game.away_score) || (game.away_team_id == id && game.away_score < game.home_score)) }.count
-    end
+    losses = Game.where("(home_team_id = :id AND home_score < away_score) OR (away_team_id = :id AND away_score < home_score)", id: id)
+                 .group("CAST(EXTRACT(YEAR FROM date) AS int)")
+                 .count
 
-    ties = years.map do |year|
-      games.select { |game| game.date.year == year && game.home_score == game.away_score }.count
-    end
+    ties = Game.where("home_score = away_score AND (home_team_id = :id OR away_team_id = :id)", id: id)
+               .group("CAST(EXTRACT(YEAR FROM date) AS int)")
+               .count
 
     first_year = years.first
     last_year = years.last

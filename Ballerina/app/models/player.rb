@@ -5,7 +5,10 @@ class Player < ActiveRecord::Base
   has_many :goals
 
   def year_span_of_scoring
-    goals.joins(:game).pluck(:date).minmax
+    goals.joins(:game)
+         .select("MIN(games.date) AS min_date, MAX(games.date) AS max_date")
+         .first.attributes
+         .values_at("min_date", "max_date")
   end
 
   def most_goal_in_single_game
@@ -18,9 +21,9 @@ class Player < ActiveRecord::Base
   end
 
   def goals_to_games_per_year_stats
-    goals.joins('INNER JOIN games ON games.id = goals.game_id')
-         .group('EXTRACT(YEAR FROM games.date)')
-         .select('EXTRACT(YEAR FROM games.date) AS year, COUNT(goals.id) * 1.0 / COUNT(DISTINCT games.id) AS ratio')
+    goals.joins("INNER JOIN games ON games.id = goals.game_id")
+         .group("EXTRACT(YEAR FROM games.date)")
+         .select("EXTRACT(YEAR FROM games.date) AS year, COUNT(goals.id) * 1.0 / COUNT(DISTINCT games.id) AS ratio")
   end
 
   def number_of_own_goals
