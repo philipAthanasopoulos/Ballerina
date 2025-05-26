@@ -22,7 +22,7 @@ default: &default
 
 development:
   <<: *default
-  database: football
+  database: football_db
   username: postgres
   password: root
   port: 5432

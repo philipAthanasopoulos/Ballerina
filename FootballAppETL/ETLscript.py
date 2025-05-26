@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine, MetaData, Table
 
 # Create a connection to your SQL database
-engine = create_engine('postgresql+psycopg2://postgres:root@localhost:5432/football')
+engine = create_engine('postgresql+psycopg2://postgres:root@localhost:5432/football_db')
 countries_table = Table('countries', MetaData(), autoload_with=engine)
 games_table = Table('games', MetaData(), autoload_with=engine)
 players_table = Table('players', MetaData(), autoload_with=engine)
