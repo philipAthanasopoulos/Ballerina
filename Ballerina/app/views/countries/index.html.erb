@@ -1,3 +1,11 @@
+<%= form_with url: countries_path, method: :get, local: true do %>
+  <p>
+    <%= label_tag :query, "Search Countries:" %>
+    <%= text_field_tag :query, params[:query] %>
+    <%= submit_tag "Search" %>
+  </p>
+<% end %>
+
 <p style="color: green"><%= notice %></p>
 
 <% content_for :title, "Countries" %>
@@ -11,4 +19,3 @@
     </p>
   <% end %>
 </div>
-

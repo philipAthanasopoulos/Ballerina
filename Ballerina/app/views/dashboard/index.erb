@@ -1,12 +1,11 @@
 <div>
   <h1>
     Games of
-    <%= link_to "<", dashboard_with_year_path(year: @year - 1), class: "button", id: "increase-year" %>
-    <%= @year %>
-    <%= link_to ">", dashboard_with_year_path(year: @year + 1), class: "button", id: "increase-year" %>
+    <%= form_with url: dashboard_index_path, method: :get, local: true do %>
+      <%= number_field_tag :year, @year, class: "year-input" %>
+      <%= submit_tag "Go", class: "button" %>
+    <% end %>
   </h1>
-  <br>
-  <br>
   <br>
   Total games: <%= @games.size %>
   <br>

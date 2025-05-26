@@ -5,10 +5,13 @@ class Player < ActiveRecord::Base
   has_many :goals
 
   def year_span_of_scoring
-    goals.joins(:game)
-         .select("MIN(games.date) AS min_date, MAX(games.date) AS max_date")
-         .first.attributes
-         .values_at("min_date", "max_date")
+    years = Goal.joins(:game)
+                .where(player_id: id)
+                .pluck(Arel.sql(
+                  "CAST(MIN(EXTRACT(YEAR FROM games.date)) AS INT),
+                            CAST(MAX(EXTRACT(YEAR FROM games.date)) AS INT)"
+                ))
+                .first
   end
 
   def most_goal_in_single_game

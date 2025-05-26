@@ -3,7 +3,11 @@ class CountriesController < ApplicationController
 
   # GET /countries or /countries.json
   def index
-    @countries = Country.all
+    if params[:query].present?
+      @countries = Country.where('"Display_Name" ILIKE ?', "%#{params[:query]}%")
+    else
+      @countries = Country.all
+    end
   end
 
   # GET /countries/1 or /countries/1.json

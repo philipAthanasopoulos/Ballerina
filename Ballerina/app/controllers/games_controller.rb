@@ -1,11 +1,9 @@
 class GamesController < ApplicationController
   before_action :set_game, only: %i[ show edit update destroy ]
 
-  # GET /games or /games.json
   def index
-    @games = Game.all
+    @games = Game.includes(:country, :goals, :away_team, :home_team).page(params[:page]).per(10)
   end
-
   # GET /games/1 or /games/1.json
   def show
   end
